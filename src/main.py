@@ -60,3 +60,32 @@ def debugger(_func=None,*,raise_error=False)->Literal['debug']:
         return decorator
     else:
         return decorator(_func)
+    
+    
+    
+    
+def on_thread(_func=None,*,reps=1,loop=False,timeout=600):
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            if loop:
+                def loop(args,kwargs):
+                    while True:
+                        func(*args, **kwargs)
+                        sleep(timeout)
+                t = Thread(target=loop,args=args,kwargs=kwargs)
+            else:
+                def loop(args,kwargs):
+                    for _ in range(reps):
+                        func(*args, **kwargs)
+                        sleep(timeout)
+                t = Thread(target=loop,args=args,kwargs=kwargs)
+                
+            t.start()
+            t.join()
+            return 0
+        return wrapper
+    
+    if _func is None:
+        return decorator
+    else:
+        return decorator(_func)
