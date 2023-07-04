@@ -1,7 +1,7 @@
 import time
 from typing import Literal
 
-def timer(_func=None,*,repeat=1,verbose=True)->Literal['execution time']:
+def timer(_func=None,*,repeat=1,verbose=True)->None:
     def decorator(func):
         def wrapper(*args, **kwargs):
             t = []
@@ -36,7 +36,7 @@ def timer(_func=None,*,repeat=1,verbose=True)->Literal['execution time']:
         return decorator(_func)
     
     
-def debugger(_func=None,*,raise_error=False)->Literal['debug']:
+def debugger(_func=None,*,raise_error=False)->None:
     def decorator(func):
         def wrapper(*args, **kwargs):
             try:
@@ -64,7 +64,7 @@ def debugger(_func=None,*,raise_error=False)->Literal['debug']:
     
     
     
-def on_thread(_func=None,*,reps=1,loop=False,timeout=600):
+def on_thread(_func=None,*,reps=1,loop=False,timeout=600)->None:
     global l
     l = loop
     def decorator(func):
@@ -80,8 +80,7 @@ def on_thread(_func=None,*,reps=1,loop=False,timeout=600):
                         func(*args, **kwargs)
                         sleep(timeout)
                         
-            t = Thread(target=loop,args=args,kwargs=kwargs)
-                
+            t = Thread(target=loop,args=args,kwargs=kwargs)  
             t.start()
             
             return 0
