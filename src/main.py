@@ -1,5 +1,5 @@
 import time
-from typing import Literal
+from threading import Thread
 
 def timer(_func=None,*,repeat=1,verbose=True)->None:
     def decorator(func):
@@ -73,12 +73,12 @@ def on_thread(_func=None,*,reps=1,loop=False,timeout=600)->None:
                 def loop(*args,**kwargs):
                     while True:
                         func(*args, **kwargs)
-                        sleep(timeout)
+                        time.sleep(timeout)
             else:
                 def loop(*args,**kwargs):
                     for _ in range(reps):
                         func(*args, **kwargs)
-                        sleep(timeout)
+                        time.sleep(timeout)
                         
             t = Thread(target=loop,args=args,kwargs=kwargs)  
             t.start()
